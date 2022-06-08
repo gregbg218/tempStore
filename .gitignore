@@ -19,6 +19,7 @@
 *.tar.gz
 *.rar
 
+<<<<<<< HEAD
 #IntelliJ
 *.iml
 target/
@@ -99,3 +100,4 @@ build/
 
 # vercel
 /src/main/frontend/.vercel
+
