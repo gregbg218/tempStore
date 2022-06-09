@@ -40,66 +40,36 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function FileTable() {
+export default function FileTable({fileList,setFileList,fetchFileList}) {
 
-  const [fileList, setFileList] = useState([]);
+  
   const { asPath } = useRouter();
 
-  const handleDelete = (fileName, e) => {
-    axios.get("http://localhost:8080/tempStore/delete", { params: { fileName: fileName } });
+  const handleDelete =  (fileName) => {
+     axios.get("http://localhost:8080/tempStore/delete", { params: { fileName: fileName } });
     let filteredArray = fileList.filter(item => item.fileName !== fileName);
     // console.log(filteredArray);
     setFileList(filteredArray);
     // window.location.reload();
   }
 
-  const handleClearAll = (fileName, e) => {
-    const res = axios.get("http://localhost:8080/tempStore/deleteAll");
+  const handleClearAll =  () => {
+     axios.get("http://localhost:8080/tempStore/deleteAll");
     setFileList([]);
     // window.location.reload();
   }
 
-  const handleDownload = async (fileName, e) => {
-    const res = await axios.get("http://localhost:8080/tempStore/download/", { params: { fileName: fileName } })
+  const handleDownload =  (fileName) => {
+    const res =  axios.get("http://localhost:8080/tempStore/download/", { params: { fileName: fileName } })
     console.log(res);
   }
 
   
 
-  const fetchFileList = () => {
-    let url=""
-    if(window!=undefined)
-      url=window.location.href;
-    const userId =url.substring(url.lastIndexOf('/') + 1);
-    console.log("hey");
-    console.log(url);
-    console.log(userId);
-    // if("hey"==="hey"+userId)
-    // console.log("http://localhost:8080/tempStore/listFiles"+userId);
-    if (userId === "") {
-    //   axios.get("http://localhost:8080/tempStore/listFiles").then(
-    //   (res) => {
-    //     console.log("going in");
-    //     setFileList(res.data);
-    //   }
-
-    // )
-  }
-  else
-  {
-    axios.get("http://localhost:8080/tempStore/listFiles/"+userId).then(
-      (res) => {
-        // console.log(res);
-        setFileList(res.data);
-      }
-
-    )
-  }
-    
-  }
+  
 
   useEffect(() => {
-    // console.log(window.location.href)
+    console.log("calling from fileTable");
     fetchFileList();
   }, []);
 
@@ -117,7 +87,9 @@ export default function FileTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {fileList.map((file) => (
+            {
+            
+            fileList.map((file) => (
 
               <StyledTableRow key={file.fileName}>
 
@@ -132,8 +104,8 @@ export default function FileTable() {
                       <ArticleIcon />
                     </Box>
                     {file.fileName}
-                    <IconButton onClick={(event) => { handleDownload(file.fileName, event) }}><FileDownloadOutlinedIcon /></IconButton>
-                    <IconButton onClick={(event) => { handleDelete(file.fileName, event) }}><DeleteIcon /></IconButton>
+                    <IconButton onClick={ (event) => {  handleDownload(file.fileName, event) }}><FileDownloadOutlinedIcon /></IconButton>
+                    <IconButton onClick={ (event) => {  handleDelete(file.fileName, event) }}><DeleteIcon /></IconButton>
                   </Box>
                 </StyledTableCell>
                 <StyledTableCell align="right">{file.fileSize}</StyledTableCell>
