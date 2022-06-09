@@ -50,7 +50,7 @@ public class UploadFileController {
     @GetMapping("/listFiles/{user}")
     public List<UploadFile> showUploadedFiles(@PathVariable String user)
     {
-        System.out.println(user);
+//        System.out.println(user);
         return uploadFileService.getFilesListUser(user);
     }
 

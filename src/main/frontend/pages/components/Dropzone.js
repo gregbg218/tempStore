@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone'
 import Link from '@mui/material/Link';
@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 
 
 
-const Dropzone = (props) => {
+const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
 
 
   let userId = "";
@@ -21,6 +21,13 @@ const Dropzone = (props) => {
 
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ multiple: true });
 
+  const [displayFileList, setDisplayFileList] = useState([]);
+
+  // const onDrop = useCallback(acceptedFiles => {
+  //   // Do something with the files
+  // }, [])
+
+  // }
 
   const files = acceptedFiles.map(file => (
     <li key={file.path}>
@@ -28,29 +35,37 @@ const Dropzone = (props) => {
     </li>
   ));
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
 
-  const sendFiles = (uploadFile) => {
+
+  const sendFiles = async () => {
     console.log("user");
-    if(userId==="")
+    if (userId === "")
       userId = router.asPath.substring(router.asPath.lastIndexOf('/') + 1);
-    
-    console.log(userId);
-    const formData = new FormData();
 
-    formData.append("file", uploadFile);
-    // formData.append("uploadFileInfo", JSON.stringify(uploadFileInfo));
+    // console.log(userId);
+    for (const uploadFile of acceptedFiles) {
+      const formData = new FormData();
 
-    axios.post("http://localhost:8080/tempStore/upload/" + userId, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    }).then(
-      () => {
-        console.log("file uploaded successfully");
-      }
-    ).catch(err => {
-      console.log(err);
-    });
+      formData.append("file", uploadFile);
+      // formData.append("uploadFileInfo", JSON.stringify(uploadFileInfo));
+
+      await axios.post("http://localhost:8080/tempStore/upload/" + userId, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      // .then(
+      //   () => {
+      //     console.log("file uploaded successfully");
+      //   }
+      // ).catch(err => {
+      //   console.log(err);
+      // });
+      console.log("file uploaded successfully");
+      
+    }
+
 
   }
 
@@ -61,33 +76,60 @@ const Dropzone = (props) => {
     const res = await axios.get("http://localhost:8080/tempStore/createUser");
     // setUserId(res.data)
     userId = res.data
-    console.log("hey")
-    console.log(res.data)
+    // console.log("hey")
+    // console.log(res.data)
 
 
-    acceptedFiles.map(sendFiles)
+    // acceptedFiles.map(sendFiles)
+    await sendFiles();
 
     router.push('/User/' + userId);
-    // window.location.reload();
+
   }
 
-  const handleAddFiles = (e) => {
+  const handleAddFiles = async (e) => {
     e.preventDefault()
-    console.log("INSIDE ADD")
-
-    acceptedFiles.map(sendFiles)
-    console.log("INSIDE ADD OUTSIDE MAP")
-    // window.location.reload();
-    if(userId==="")
+    // console.log("INSIDE ADD")
+    if (userId === "") {
       userId = router.asPath.substring(router.asPath.lastIndexOf('/') + 1);
+    }
+
+    console.log("inside dropzone")
+    await sendFiles()
+    // await delay(3000);
+    // console.log("Waited 5s");
+    // console.log("INSIDE ADD OUTSIDE MAP")
+    // window.location.reload();
+
     // router.push('/User/' + userId);
-    window.location.reload();
+    // window.location.reload();
+    // let newFiles=[];
+    // acceptedFiles.map(file => (
+    // newFiles.push(file.name)
+    // ));
+    // console.log(typeof(fileList));
+    // console.log(typeof(acceptedFiles));
+
+
+    // console.log(fileList);
+    // console.log(acceptedFiles);
+    // let filteredArray = fileList.concat(acceptedFiles);
+    // setFileList(filteredArray);
+    // console.log("http://localhost:8080/tempStore/listFiles/"+userId);
+    // let res = await axios.get("http://localhost:8080/tempStore/listFiles/"+userId);
+    // setFileList(res.data);
+    fetchFileList()
+
+
+    console.log(fileList)
+    // files=null;
+
   }
 
   const checkURL = () => {
 
     // console.log(props.buttonFlag)
-    if (props.buttonFlag) {
+    if (buttonFlag) {
 
       return <Button variant="contained" onClick={handleAddFiles}>Add files</Button>
     }

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Dropzone from './Dropzone'
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 
-const Upload = ({ buttonFlag }) => {
+const Upload = ({ buttonFlag ,fileList, setFileList,fetchFileList}) => {
 
 
     return (
@@ -13,7 +13,7 @@ const Upload = ({ buttonFlag }) => {
             
 
 
-            <Dropzone buttonFlag={buttonFlag}/>
+            <Dropzone buttonFlag={buttonFlag} fileList={fileList} setFileList={setFileList} fetchFileList={fetchFileList}/>
             <br />
             <br />
             <br />
