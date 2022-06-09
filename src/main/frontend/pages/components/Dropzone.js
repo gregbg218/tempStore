@@ -18,10 +18,15 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
   // const asPath = useRouter();
   const router = useRouter();
 
+  const handleSubmitBtn = useCallback(() => {
+    console.log("inside on drop");
+    setSubmitFlag(true);
+  }, []);
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ multiple: true });
 
-  const [displayFileList, setDisplayFileList] = useState([]);
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ onDrop:() => handleSubmitBtn(),multiple: true });
+
+  const [submitFlag, setSubmitFlag] = useState(false);
 
   // const onDrop = useCallback(acceptedFiles => {
   //   // Do something with the files
@@ -65,7 +70,7 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
       console.log("file uploaded successfully");
       
     }
-
+    setSubmitFlag(false);
 
   }
 
@@ -127,14 +132,22 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
   }
 
   const checkURL = () => {
+    if(submitFlag)
+      {
+        if (buttonFlag) {
+
+          return <Button variant="contained" onClick={handleAddFiles}>Add files</Button>
+        }
+        else
+        {
+          return <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+        }
+      }
 
     // console.log(props.buttonFlag)
-    if (buttonFlag) {
+    
 
-      return <Button variant="contained" onClick={handleAddFiles}>Add files</Button>
-    }
-
-    return <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+    
   }
 
 
