@@ -146,11 +146,11 @@ public class FileStore {
         double size_gb = size_mb / 1024 ;
 
         if (size_gb > 1){
-            size = String.format("%.3f", size_gb) + " GB";
+            size = String.format("%.2f", size_gb) + " GB";
         }else if(size_mb > 1){
-            size = String.format("%.3f", size_mb) + " MB";
+            size = String.format("%.2f", size_mb) + " MB";
         }else{
-            size = String.format("%.3f", size_kb) + " KB";
+            size = String.format("%.2f", size_kb) + " KB";
         }
         return size;
     }
