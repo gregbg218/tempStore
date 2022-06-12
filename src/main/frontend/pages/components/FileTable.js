@@ -40,33 +40,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-export default function FileTable({fileList,setFileList,fetchFileList}) {
+export default function FileTable({ fileList, setFileList, fetchFileList }) {
 
-  
+
   const { asPath } = useRouter();
 
-  const handleDelete =  (fileName) => {
-     axios.get("http://localhost:8080/tempStore/delete", { params: { fileName: fileName } });
+  const handleDelete = (fileName) => {
+    axios.get("http://localhost:8080/tempStore/delete", { params: { fileName: fileName } });
     let filteredArray = fileList.filter(item => item.fileName !== fileName);
     // console.log(filteredArray);
     setFileList(filteredArray);
     // window.location.reload();
   }
 
-  const handleClearAll =  () => {
-     axios.get("http://localhost:8080/tempStore/deleteAll");
+  const handleClearAll = () => {
+    axios.get("http://localhost:8080/tempStore/deleteAll");
     setFileList([]);
     // window.location.reload();
   }
 
-  const handleDownload =  (fileName) => {
-    const res =  axios.get("http://localhost:8080/tempStore/download/", { params: { fileName: fileName } })
+  const handleDownload = async (fileName) => {
+    const res = await axios.get("http://localhost:8080/tempStore/download/", { params: { fileName: fileName } })
     console.log(res);
   }
 
-  
 
-  
+  const checkFileTable = () => {
+
+    if (fileList.length > 0) {
+
+      return <Button variant="contained" style={{
+        backgroundColor: "red",
+
+      }}
+        onClick={handleClearAll}
+      >Clear All</Button>
+    }
+  }
+
+
+
+
 
   useEffect(() => {
     console.log("calling from fileTable");
@@ -88,40 +102,36 @@ export default function FileTable({fileList,setFileList,fetchFileList}) {
           </TableHead>
           <TableBody>
             {
-            
-            fileList.map((file) => (
 
-              <StyledTableRow key={file.fileName}>
+              fileList.map((file) => (
 
-                <StyledTableCell component="th" scope="row">
-                  <Box
-                    display={'flex'}
+                <StyledTableRow key={file.fileName}>
 
-                    alignItems={'center'}
-                    flexWrap={'wrap'}
-                  >
-                    <Box paddingRight={1}>
-                      <ArticleIcon />
+                  <StyledTableCell component="th" scope="row">
+                    <Box
+                      display={'flex'}
+
+                      alignItems={'center'}
+                      flexWrap={'wrap'}
+                    >
+                      <Box paddingRight={1}>
+                        <ArticleIcon />
+                      </Box>
+                      {file.fileName.substring(file.fileName.lastIndexOf('/') + 1)}
+                      <IconButton onClick={(event) => { handleDownload(file.fileName, event) }}><FileDownloadOutlinedIcon /></IconButton>
+                      <IconButton onClick={(event) => { handleDelete(file.fileName, event) }}><DeleteIcon /></IconButton>
                     </Box>
-                    {file.fileName}
-                    <IconButton onClick={ (event) => {  handleDownload(file.fileName, event) }}><FileDownloadOutlinedIcon /></IconButton>
-                    <IconButton onClick={ (event) => {  handleDelete(file.fileName, event) }}><DeleteIcon /></IconButton>
-                  </Box>
-                </StyledTableCell>
-                <StyledTableCell align="right">{file.fileSize}</StyledTableCell>
-                <StyledTableCell align="right">{file.uploadTime}</StyledTableCell>
-              </StyledTableRow>
-            ))}
+                  </StyledTableCell>
+                  <StyledTableCell align="right">{file.fileSize}</StyledTableCell>
+                  <StyledTableCell align="right">{file.uploadTime}</StyledTableCell>
+                </StyledTableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer >
       <br />
-      <Button variant="contained" style={{
-        backgroundColor: "red",
+      {checkFileTable()}
 
-      }}
-        onClick={handleClearAll}
-      >Clear All</Button>
     </Box>
   );
 }

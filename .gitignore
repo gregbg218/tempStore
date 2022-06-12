@@ -101,3 +101,7 @@ build/
 # vercel
 /src/main/frontend/.vercel
 
+
+src/main/frontend/docker-compose.yml
+
+src/main/frontend/Dockerfile.dev

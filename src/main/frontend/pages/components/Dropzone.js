@@ -20,6 +20,7 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
 
   const handleSubmitBtn = useCallback(() => {
     console.log("inside on drop");
+    setFilesSelectedFlag(true);
     setSubmitFlag(true);
   }, []);
 
@@ -27,6 +28,7 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({ onDrop:() => handleSubmitBtn(),multiple: true });
 
   const [submitFlag, setSubmitFlag] = useState(false);
+  const [filesSelectedFlag, setFilesSelectedFlag] = useState(false);
 
   // const onDrop = useCallback(acceptedFiles => {
   //   // Do something with the files
@@ -34,11 +36,7 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
 
   // }
 
-  const files = acceptedFiles.map(file => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
+  
 
   const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -71,6 +69,7 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
       
     }
     setSubmitFlag(false);
+    setFilesSelectedFlag(false);
 
   }
 
@@ -131,7 +130,25 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
 
   }
 
+  const checkFilesSelected = () => {
+    // console.log("outside preview")
+    if (filesSelectedFlag) {
+      // console.log("inside preview")
+      const files = acceptedFiles.map(file => (
+        <li key={file.path}>
+          {file.path} - {file.size} bytes
+        </li>
+      ));
+
+      return files;
+    }
+
+
+  }
+
   const checkURL = () => {
+    // async (event)=>{await handleAddFiles(event)}
+    // async (event)=>{await handleSubmit(event)}
     if(submitFlag)
       {
         if (buttonFlag) {
@@ -164,8 +181,8 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
             <h2>Drag 'n' drop some files here, or click to select files</h2>
           </div>
           <aside>
-            <h4>Files</h4>
-            <ul>{files}</ul>
+            <h4>Selected Files:</h4>
+            <ul>{checkFilesSelected()}</ul>
           </aside>
         </section>
       </Box>
