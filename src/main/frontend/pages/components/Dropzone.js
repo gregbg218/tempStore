@@ -178,7 +178,7 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
             <Box sx={{ display: 'flex', justifyContent: 'center' }} >
               <SummarizeOutlinedIcon fontSize="large" />
             </Box>
-            <h2>Drag 'n' drop some files here, or click to select files</h2>
+            <h2>Drag and drop some files here, or click to select files</h2>
           </div>
           <aside>
             <h4>Selected Files:</h4>
