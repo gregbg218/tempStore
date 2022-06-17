@@ -60,14 +60,16 @@ export default function FileTable({ fileList, setFileList, fetchFileList }) {
   }
 
   const handleDownload = async (fileName) => {
-    const res = await axios.get("http://localhost:8080/tempStore/download/", { params: { fileName: fileName } })
-    console.log(res);
+    // const res = await axios.get("http://localhost:8080/tempStore/download/", { params: { fileName: fileName } })
+    // console.log("http://localhost:8080/tempStore/download?fileName="+fileName);
+    window.location.href = "http://localhost:8080/tempStore/download?fileName="+fileName;
+    // console.log(res);
   }
 
 
   const checkFileTable = () => {
 
-    if (fileList.length > 0) {
+    if (fileList?.length > 0) {
 
       return <Button variant="contained" style={{
         backgroundColor: "red",
@@ -103,7 +105,7 @@ export default function FileTable({ fileList, setFileList, fetchFileList }) {
           <TableBody>
             {
 
-              fileList.map((file) => (
+              fileList?.map((file) => (
 
                 <StyledTableRow key={file.fileName}>
 
