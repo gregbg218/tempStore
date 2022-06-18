@@ -12,7 +12,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton, Box, Button } from '@mui/material';
-import { useRouter } from 'next/router'
+// import { useRouter } from 'next/router'
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -43,7 +43,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function FileTable({ fileList, setFileList, fetchFileList }) {
 
 
-  const { asPath } = useRouter();
+  // const { asPath } = useRouter();
 
   const handleDelete = (fileName) => {
     axios.get("http://localhost:8080/tempStore/delete", { params: { fileName: fileName } });

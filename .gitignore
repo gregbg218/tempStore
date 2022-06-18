@@ -78,30 +78,22 @@ build/
 # testing
 /src/main/frontend/coverage
 
-# next.js
-/src/main/frontend/.next/
-/src/main/frontend/out/
+
 
 # production
 /src/main/frontend/build
 
 # misc
 /src/main/frontend/.DS_Store
-/src/main/frontend/*.pem
+/src/main/frontend/.env.local
+/src/main/frontend/.env.development.local
+/src/main/frontend/.env.test.local
+/src/main/frontend/.env.production.local
 
 # debug
 /src/main/frontend/npm-debug.log*
 /src/main/frontend/yarn-debug.log*
 /src/main/frontend/yarn-error.log*
-/src/main/frontend/.pnpm-debug.log*
-
-# local env files
-/src/main/frontend/.env*.local
-
-# vercel
-/src/main/frontend/.vercel
 
 
-src/main/frontend/docker-compose.yml
 
-src/main/frontend/Dockerfile.dev

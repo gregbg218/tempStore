@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { useDropzone } from 'react-dropzone'
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import Button from '@mui/material/Button';
-import { useRouter } from 'next/router'
+import { useNavigate } from "react-router-dom";
+// import { useRouter } from 'next/router'
 
 
 
@@ -14,9 +14,10 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
 
 
   let userId = "";
+  let navigate = useNavigate();
 
   // const asPath = useRouter();
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmitBtn = useCallback(() => {
     console.log("inside on drop");
@@ -38,13 +39,17 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
 
   
 
-  const delay = ms => new Promise(res => setTimeout(res, ms));
+  // const delay = ms => new Promise(res => setTimeout(res, ms));
 
 
   const sendFiles = async () => {
+    let url="";
+    if(window!=undefined)
+      url=window.location.href;
     console.log("user");
     if (userId === "")
-      userId = router.asPath.substring(router.asPath.lastIndexOf('/') + 1);
+      // userId = router.asPath.substring(router.asPath.lastIndexOf('/') + 1);
+      userId=url.substring(url.lastIndexOf('/') + 1);
 
     // console.log(userId);
     for (const uploadFile of acceptedFiles) {
@@ -80,22 +85,25 @@ const Dropzone = ({ buttonFlag, fileList, setFileList, fetchFileList }) => {
     const res = await axios.get("http://localhost:8080/tempStore/createUser");
     // setUserId(res.data)
     userId = res.data
-    // console.log("hey")
-    // console.log(res.data)
+    console.log("hey in submit")
+    console.log(res.data)
 
 
     // acceptedFiles.map(sendFiles)
     await sendFiles();
 
-    router.push('/User/' + userId);
+    navigate('/user/' + userId);
 
   }
 
   const handleAddFiles = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    let url="";
+    if(window!=undefined)
+      url=window.location.href;
     // console.log("INSIDE ADD")
     if (userId === "") {
-      userId = router.asPath.substring(router.asPath.lastIndexOf('/') + 1);
+      userId = url.substring(url.lastIndexOf('/') + 1);
     }
 
     console.log("inside dropzone")

@@ -1,19 +1,16 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import Appbar from './components/Appbar'
-import FileTable from './components/FileTable'
-import Upload from './components/Upload'
-import React, { useState, useEffect } from 'react';
+
+import Appbar from './Appbar'
+import FileTable from './FileTable'
+import Upload from './Upload'
+import React, { useState } from 'react';
 import axios from 'axios';
 
 
 
-export default function Home() {
-
+export default function User() {
   const [fileList, setFileList] = useState([]);
 
-  const fetchFileList = () => {
+  const fetchFileList = async () => {
     let url=""
     if(window!=undefined)
       url=window.location.href;
@@ -24,13 +21,6 @@ export default function Home() {
     // if("hey"==="hey"+userId)
     // console.log("http://localhost:8080/tempStore/listFiles"+userId);
     if (userId === "") {
-    //   axios.get("http://localhost:8080/tempStore/listFiles").then(
-    //   (res) => {
-        // console.log("going in");
-    //     setFileList(res.data);
-    //   }
-
-    // )
   }
   else
   {
@@ -41,11 +31,13 @@ export default function Home() {
       }
 
     )
+    console.log("[id] inside fetchfilelist");
+    console.log(fileList);
   }
     
   }
   return (
-    <div className={styles.container}>
+    <div className="App">
       <Appbar />
       <br />
       <br />
@@ -54,7 +46,7 @@ export default function Home() {
       <br />
       <br />
       <FileTable fileList={fileList} setFileList={setFileList} fetchFileList={fetchFileList}/>
-      <Upload buttonFlag={false} fileList={fileList} setFileList={setFileList} />
+      <Upload buttonFlag={true} fileList={fileList} setFileList={setFileList} fetchFileList={fetchFileList}/>
     </div>
   )
 }
