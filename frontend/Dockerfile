@@ -1,9 +1,5 @@
-FROM node:alpine
-WORKDIR '/app'
-COPY package.json .
+FROM node:14.15.4-alpine3.11
+WORKDIR /app
+ADD . .
 RUN npm install
-COPY . .
-RUN npm run build
-
-FROM nginx
-COPY --from=0 /app/build /usr/share/nginx/html
+CMD npm start
